@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "65332626722",
+    "project_id": "isekaitec",
+    "storage_bucket": "isekaitec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65332626722:android:1d1ed0c1b9d8d20fe9517b",
+        "android_client_info": {
+          "package_name": "com.example.isekaitec"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "65332626722-mhov2uhkjrrtr1msjiejmpv13mf90mlv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArhQqyWjN9qL9BRQxhsIHEySB35_TLPco"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "65332626722-mhov2uhkjrrtr1msjiejmpv13mf90mlv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
