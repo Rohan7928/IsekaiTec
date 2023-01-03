@@ -15,6 +15,7 @@ class SharedPreferenceHelper {
   static const String USER_TOKEN = "user_token";
   static const String FCM_TOKEN  = "fcm_token";
   static const String IS_INTRO_COMPLETED = "is_intro_completed";
+  static const THEME_STATUS = "THEMESTATUS";
 
   static const JsonDecoder decoder = JsonDecoder();
   static const JsonEncoder encoder = JsonEncoder.withIndent('  ');
@@ -28,6 +29,15 @@ class SharedPreferenceHelper {
   static Future<SharedPreferences> init() async {
     prefsInstance = await SharedPreferences.getInstance();
     return prefsInstance;
+  }
+  setDarkTheme(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(THEME_STATUS, value);
+  }
+
+  Future<bool> getTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(THEME_STATUS) ?? false;
   }
 
   factory SharedPreferenceHelper() {

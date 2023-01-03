@@ -17,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: Color(ColorConstants.appColor),
+      backgroundColor: const Color(ColorConstants.appColor),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Center(
                   child: Padding(
-                    padding: EdgeInsets.only(left: 152,right: 138),
+                    padding: const EdgeInsets.only(left: 152, right: 138),
                     child: Image.asset(
                       "assets/media/circular.png",
                       width: 78,
@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                 const SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Image.asset(
@@ -50,17 +50,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 30,
                 ),
-                Text(
-                    Constants.selectaccount_text,
+                Text(Constants.selectaccount_text,
                     style: GoogleFonts.nunito(
                       textStyle: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
                       ),
-                    )
-                ),
-                SizedBox(
+                    )),
+                const SizedBox(
                   height: 25,
                 ),
                 Padding(
@@ -74,36 +72,45 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: 236,
                       child: const Center(
                           child: Text(
-                            Constants.caregiver_text,
-                            style: TextStyle(color: Colors.white, fontSize: 24,fontWeight: FontWeight.w400),
-                          )),
+                        Constants.caregiver_text,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400),
+                      )),
                     ),
                     onTap: () {
-                      Navigator.push(context, Utility.createCustomRoute(Otpscreen()));
+                      Navigator.push(context,
+                          Utility.createCustomRoute(const Otpscreen()));
                     },
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 80, right: 80),
+                  padding: const EdgeInsets.only(left: 80, right: 80),
                   child: GestureDetector(
                     child: Container(
                       decoration: BoxDecoration(
-                          border: Border.all(color: Color(ColorConstants.buttoncolor)),
-                          color: Color(ColorConstants.appColor),
+                          border: Border.all(
+                              color: const Color(ColorConstants.buttoncolor)),
+                          color: const Color(ColorConstants.appColor),
                           borderRadius: BorderRadius.circular(10)),
                       height: 45,
                       width: 236,
                       child: const Center(
                           child: Text(
-                            Constants.carereceiver_text,
-                            style: TextStyle(color: Color(ColorConstants.buttoncolor), fontSize: 24,fontWeight: FontWeight.w400),
-                          )),
+                        Constants.carereceiver_text,
+                        style: TextStyle(
+                            color: Color(ColorConstants.buttoncolor),
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400),
+                      )),
                     ),
                     onTap: () {
-                      Navigator.push(context, Utility.createCustomRoute(Otpscreen()));
+                      Navigator.push(
+                          context, Utility.createCustomRoute(Otpscreen()));
                     },
                   ),
                 ),
@@ -114,13 +121,12 @@ class _LoginScreenState extends State<LoginScreen> {
             alignment: Alignment.bottomCenter,
             child: Image.asset(
               "assets/media/welcomescreen_image.png",
-              height:  362,
-              width: MediaQuery.of(context).size.width ,
+              height: 362,
+              width: MediaQuery.of(context).size.width,
               fit: BoxFit.fill,
             ),
           ),
         ],
-
       ),
     );
   }

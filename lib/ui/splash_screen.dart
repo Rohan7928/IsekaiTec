@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:isekaitec/ui/sign_in_screen.dart';
+import 'package:isekaitec/ui/success_screen.dart';
 import 'package:isekaitec/utils/color_constants.dart';
-
 import '../utils/utility.dart';
 import 'CircularProgressIndicatorApp.dart';
 import 'login_screen.dart';
@@ -22,8 +23,7 @@ class SplashScreenState extends State<SplashScreen> {
       timer.cancel();
       var connectivityResult = await (Connectivity().checkConnectivity());
       if (connectivityResult != ConnectivityResult.none) {
-        Navigator.pushReplacement(
-            context, Utility.createCustomRoute(Otpscreen()));
+        Navigator.pushReplacement(context, Utility.createCustomRoute(const SignInScreen()));
       } else {
         Utility.showSnackbar(context, "Please check your internet connection");
       }

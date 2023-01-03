@@ -25,7 +25,7 @@ class ColorConstants {
   static const int DARK_C_GREEN = 0xFF338583;
   static const int COLOR_GREY = 0xffAAA9AB;
   static const int DARK_GREY = 0xFF535353;
-  static const int LIGHT_GREY = 0xFF595959;
+  static const int LIGHT_GREY = 0xFFD3D3D3;
   static const int SHADOW_LIGHT_BLUE = 0xFF5DC8E0;
   static const int COLOR_GREEN_BLUE = 0xFF4596AB;
   static const int COLOR_LIGHT_GREY = 0xFFEBE9EB;
@@ -45,6 +45,7 @@ class ColorConstants {
   static const int COLOR_RED = 0xFFDA1D11;
   static const int COLOR_BACKGROUND = 0xFFF5F5F5;
   static const int COLOR_THEME_GREEN = 0xFF319000;
+  static const int COLOR_BUTTON_GREEN = 0xFFa26aea;
 
   static const int COLOR_PROFILE_CARD_COLOR= 0xFFFFA72F;
 
