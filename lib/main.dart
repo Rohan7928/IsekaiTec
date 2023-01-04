@@ -55,7 +55,9 @@ class _MyApp extends State<MyApp> {
           return MaterialApp(
 
             debugShowCheckedModeBanner: false,
-            theme: Styles.themeData(themeChangeProvider.darkTheme, context),
+            //theme: Styles.themeData(themeChangeProvider.darkTheme, context),
+            theme: ThemeData.light(),
+            darkTheme: ThemeData.dark(),
             home: SplashScreen(),
           );
         },

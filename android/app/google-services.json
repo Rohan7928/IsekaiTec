@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "65332626722-gseh1nt7eql08ntfrn4ldsuq8sd82og6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.isekaitec",
+            "certificate_hash": "2a9252bbf0618a0ac7512d2db09f132738cf5b29"
+          }
+        },
+        {
           "client_id": "65332626722-mhov2uhkjrrtr1msjiejmpv13mf90mlv.apps.googleusercontent.com",
           "client_type": 3
         }

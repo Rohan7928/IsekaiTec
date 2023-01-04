@@ -8,7 +8,9 @@ import 'package:isekaitec/utils/color_constants.dart';
 import 'package:provider/provider.dart';
 
 import '../models/DarkThemeProvider.dart';
+import '../utils/authentication.dart';
 import '../utils/utility.dart';
+import 'GoogleSignInButton.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -33,11 +35,9 @@ class _SignInScreen extends State<SignInScreen> {
     'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
   ];
 
-
   @override
   void initState() {
     super.initState();
-
   }
 
   /*Future<User> signInWithGoogle(SignInViewModel model) async {
@@ -90,175 +90,185 @@ class _SignInScreen extends State<SignInScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-        const SizedBox(
-          height: 50,
-        ),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: const Image(
-            fit: BoxFit.fill,
-            image: AssetImage('assets/icons/profile_img.png'),
-            width: 100.0,
-            height: 100.0,
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        const Text(
-          "Welcome to Isekai",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Color(ColorConstants.COLOR_BUTTON_GREEN)),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        const Text(
-          "Sign in to Continue",
-          style: TextStyle(fontSize: 14, color: Colors.grey),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        Container(
-          margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-          child: const TextField(
-            decoration: InputDecoration(
-              label: Text("Your Email"),
-              hintText: "e.g abc@gmail.com",
-              prefixIcon: Icon(Icons.email, color: Color(ColorConstants.COLOR_GREY)),
-              contentPadding: EdgeInsets.symmetric(vertical: 2.0),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                 color: Color(ColorConstants.COLOR_GREY),
-                width: 0.5,
-              )),
+            const SizedBox(
+              height: 50,
             ),
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-          child: const TextField(
-            decoration: InputDecoration(
-              label: Text("Password"),
-              hintText: "*******",
-              prefixIcon: Icon(Icons.lock, color: Color(ColorConstants.COLOR_GREY)),
-              contentPadding: EdgeInsets.symmetric(vertical: 2.0),
-              enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(
-                          color: Color(ColorConstants.COLOR_GREY),
-                          width: 0.5)),
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {},
-          child: Container(
-            width: double.infinity,
-            height: 50,
-            margin: const EdgeInsets.all(30),
-            child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context, Utility.createCustomRoute(const SignUpScreen()));
-                },
-                style: ElevatedButton.styleFrom(
-                    elevation: 12.0,
-                    backgroundColor: const Color(ColorConstants.COLOR_BUTTON_GREEN),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    )),
-                child: const Text(
-                  "Sign In",
-                  style: TextStyle(fontSize: 16),
-                )),
-          ),
-        ),
-        const Text("OR"),
-        GestureDetector(
-          onTap: () {},
-          child: Container(
-            width: double.infinity,
-            height: 50,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.black12)),
-            margin: const EdgeInsets.fromLTRB(30, 20, 30, 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Image(
-                  image: AssetImage('assets/icons/google.png'),
-                  height: 25,
-                  width: 25,
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                Text(
-                  "Login with Google",
-                  style: TextStyle(fontSize: 16, color: Colors.black54),
-                )
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            Utility.createCustomRoute(const SuccessScreen());
-          },
-          child: Container(
-            width: double.infinity,
-            height: 50,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.black12)),
-            margin: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Image(
-                  image: AssetImage('assets/icons/facebook.png'),
-                  height: 25,
-                  width: 25,
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                Text(
-                  "Login with Facebook",
-                  style: TextStyle(fontSize: 16, color: Colors.black54),
-                )
-              ],
-            ),
-          ),
-        ),
-        TextButton(
-          child: const Text("Forgot Passwrod?",
-              style: TextStyle(
-                  color: Color(ColorConstants.COLOR_BUTTON_GREEN), fontWeight: FontWeight.bold)),
-          onPressed: () {},
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Don't have a account?"),
-            TextButton(
-              child: const Text(
-                "Register",
-                style: TextStyle(
-                    color: Color(ColorConstants.COLOR_BUTTON_GREEN), fontWeight: FontWeight.bold),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: const Image(
+                fit: BoxFit.fill,
+                image: AssetImage('assets/icons/profile_img.png'),
+                width: 100.0,
+                height: 100.0,
               ),
-              onPressed: () {
-                themeChange.darkTheme = true;
-                Navigator.pushReplacement(
-                    context, Utility.createCustomRoute(const SuccessScreen()));
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text("Welcome to Isekai",
+                style: GoogleFonts.inter(
+                  textStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(ColorConstants.COLOR_BUTTON_GREEN)),
+                )),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Sign in to Continue",
+              style: GoogleFonts.inter(
+                  textStyle: const TextStyle(fontSize: 14, color: Colors.grey)),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+              child: TextField(
+                decoration: InputDecoration(
+                  label: Text("Your Email",
+                      style: GoogleFonts.inter(
+                          textStyle:
+                              const TextStyle(fontStyle: FontStyle.normal, fontSize: 12))),
+                  hintText: "e.g abc@gmail.com",
+                  prefixIcon: const Icon(Icons.email,
+                      color: Color(ColorConstants.COLOR_GREY)),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 2.0),
+                  enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(
+                    color: Color(ColorConstants.COLOR_GREY),
+                    width: 0.5,
+                  )),
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+              child: TextField(
+                decoration: InputDecoration(
+                  label: Text("Password",
+                      style: GoogleFonts.inter(
+                          textStyle:
+                              const TextStyle(fontStyle: FontStyle.normal, fontSize: 12))),
+                  hintText: "*******",
+                  prefixIcon: const Icon(Icons.lock,
+                      color: Color(ColorConstants.COLOR_GREY)),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 2.0),
+                  enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color(ColorConstants.COLOR_GREY), width: 0.5)),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                width: double.infinity,
+                height: 50,
+                margin: const EdgeInsets.all(30),
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(context,
+                          Utility.createCustomRoute(const SignUpScreen()));
+                    },
+                    style: ElevatedButton.styleFrom(
+                        elevation: 12.0,
+                        backgroundColor:
+                            const Color(ColorConstants.COLOR_BUTTON_GREEN),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        )),
+                    child: Text(
+                      "Sign In",
+                      style: GoogleFonts.inter(
+                          textStyle: const TextStyle(
+                              fontSize: 14, color: Colors.white)),
+                    )),
+              ),
+            ),
+            Text("OR",
+                style: GoogleFonts.inter(
+                    textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14))),
+            FutureBuilder(
+              future: Authentication.initializeFirebase(context: context),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Text('Error initializing Firebase');
+                } else if (snapshot.connectionState == ConnectionState.done) {
+                  return const GoogleSignInButton();
+                }
+                return const CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Colors.orange,
+                  ),
+                );
               },
             ),
-          ],
-        ),
+            GestureDetector(
+              onTap: () {
+                Utility.createCustomRoute(const SuccessScreen());
+              },
+              child: Container(
+                width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.black12)),
+                margin: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Image(
+                      image: AssetImage('assets/icons/facebook.png'),
+                      height: 25,
+                      width: 25,
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Text(
+                      "Login with Facebook",
+                      style: GoogleFonts.inter(
+                          textStyle: const TextStyle(
+                              fontSize: 14, color: Colors.black54)),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            TextButton(
+              child: Text("Forgot Passwrod?",
+                  style: GoogleFonts.inter(
+                      textStyle: const TextStyle(
+                          color: Color(ColorConstants.COLOR_BUTTON_GREEN),
+                          fontWeight: FontWeight.bold, fontSize: 12))),
+              onPressed: () {},
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Don't have a account?",
+                    style: GoogleFonts.inter(
+                        textStyle:
+                            const TextStyle(fontStyle: FontStyle.normal, fontSize: 12))),
+                TextButton(
+                  child: Text(
+                    "Register",
+                    style: GoogleFonts.inter(
+                        textStyle: const TextStyle(
+                            color: Color(ColorConstants.COLOR_BUTTON_GREEN),
+                            fontWeight: FontWeight.bold, fontSize: 14)),
+                  ),
+                  onPressed: () {
+                    themeChange.darkTheme = true;
+                    Navigator.pushReplacement(context,
+                        Utility.createCustomRoute(const SuccessScreen()));
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ),
