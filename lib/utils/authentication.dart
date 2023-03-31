@@ -6,11 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:isekaitec/utils/utility.dart';
 
-class Authentication {
-  static Future<FirebaseApp> initializeFirebase({required BuildContext context}) async {
-    FirebaseApp firebaseApp = await Firebase.initializeApp();
+import '../helpers/shared_preference_helper.dart';
 
-    // TODO: Add auto login logic
+class Authentication {
+
+  static Future<FirebaseApp> initializeFirebase() async {
+    SharedPreferenceHelper sharedPreferenceHelper = SharedPreferenceHelper();
+    FirebaseApp firebaseApp = await Firebase.initializeApp();
+    User user = FirebaseAuth.instance.currentUser!;
+    if (user.email != null) {
+      sharedPreferenceHelper.setAutoLogin(true);
+    } else {
+      sharedPreferenceHelper.setAutoLogin(false);
+    }
 
     return firebaseApp;
   }

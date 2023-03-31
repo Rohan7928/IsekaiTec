@@ -2,13 +2,12 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:isekaitec/helpers/shared_preference_helper.dart';
 import 'package:isekaitec/ui/sign_in_screen.dart';
 import 'package:isekaitec/ui/success_screen.dart';
-import 'package:isekaitec/utils/color_constants.dart';
 import '../utils/utility.dart';
 import 'CircularProgressIndicatorApp.dart';
-import 'login_screen.dart';
-import 'otp_screen.dart';
+import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -16,6 +15,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class SplashScreenState extends State<SplashScreen> {
+  SharedPreferenceHelper sharedPreferenceHelper = SharedPreferenceHelper();
+  bool autoLogin = false;
   @override
   void initState() {
     super.initState();
@@ -23,9 +24,18 @@ class SplashScreenState extends State<SplashScreen> {
       timer.cancel();
       var connectivityResult = await (Connectivity().checkConnectivity());
       if (connectivityResult != ConnectivityResult.none) {
-        Navigator.pushReplacement(context, Utility.createCustomRoute(const SignInScreen()));
+        autoLogin = await sharedPreferenceHelper.getAutoLogin();
+        if(autoLogin)
+          {
+            Navigator.pushReplacement(context, Utility.createCustomRoute(HomeScreen()));
+          }
+        else
+          {
+            Navigator.pushReplacement(context, Utility.createCustomRoute(const SignInScreen()));
+          }
+
       } else {
-        Utility.showSnackbar(context, "Please check your internet connection");
+        //Utility.showSnackbar(context, "Please check your internet connection");
       }
     });
   }

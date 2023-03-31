@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:isekaitec/connection/presenters/impls/register_user_interactor_impl.dart';
 import 'package:isekaitec/connection/presenters/register_user_presenter.dart';
 import 'package:isekaitec/connection/responses/data_response.dart';
+import 'package:isekaitec/models/product_category.dart';
 import 'package:isekaitec/models/user_model.dart';
 
-class RegisterUserPresenterImpl implements RegisterUserPresenter, RegisterUserOnCompleteListener {
+class RegisterUserPresenterImpl
+    implements RegisterUserPresenter, RegisterUserOnCompleteListener {
 
   late RegisterUserContractView contractView;
   late RegisterUserInteractor interactor;
@@ -20,11 +24,22 @@ class RegisterUserPresenterImpl implements RegisterUserPresenter, RegisterUserOn
 
   @override
   void onSuccessRegisterUser(DataResponse response) {
-    contractView.onSuccessRegisterUser(response.result);
+    contractView.onSuccessRegisterUser(response.data?.cast<UserModel>());
   }
 
   @override
-  void registerUser(UserModel userModel) {
-    interactor.registerUser(userModel, this);
+  void getTop20Items() {
+    interactor.registerUser(this);
+  }
+
+  @override
+  void getProductCategoryApi() {
+    interactor.getProductCategoryApi(this);
+  }
+
+  @override
+  void onSuccessProductCategory(DataResponse response) {
+    log("Response $response");
+    contractView.onSuccessProductCategory(response.data?.cast<ProductCategory>());
   }
 }

@@ -12,28 +12,29 @@ class _RestApiClient implements RestApiClient {
   _RestApiClient(
     this._dio, {
     this.baseUrl,
-  });
+  }) {
+    baseUrl ??= 'http://project.pisofterp.com/brandsgrove/';
+  }
 
   final Dio _dio;
 
   String? baseUrl;
 
   @override
-  Future<DataResponse<UserModel>> registerUser(model) async {
+  Future<DataResponse<UserModel>> getTop20Items() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(model.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<DataResponse<UserModel>>(Options(
-      method: 'POST',
+      method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              'user/register',
+              'ProductViewApi?products=top_20',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -41,6 +42,32 @@ class _RestApiClient implements RestApiClient {
     final value = DataResponse<UserModel>.fromJson(
       _result.data!,
       (json) => UserModel.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<DataResponse<ProductCategory>> getProductCategoryApi() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<DataResponse<ProductCategory>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'ProductCategoryApi',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DataResponse<ProductCategory>.fromJson(
+      _result.data!,
+      (json) => ProductCategory.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }

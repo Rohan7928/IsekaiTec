@@ -1,20 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:isekaitec/ui/splash_screen.dart';
-import 'package:isekaitec/utils/Styles.dart';
-import 'package:isekaitec/utils/constants.dart';
-import 'package:overlay_support/overlay_support.dart';
+import 'package:isekaitec/utils/authentication.dart';
 import 'package:provider/provider.dart';
 import 'helpers/shared_preference_helper.dart';
 import 'models/DarkThemeProvider.dart';
-//import 'firebase_options.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferenceHelper.init();
-  await Firebase.initializeApp();
+  //await Firebase.initializeApp();
+  Authentication.initializeFirebase();
+
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
@@ -25,13 +25,10 @@ Future<void> main() async {
 class MyApp extends StatefulWidget {
   @override
   _MyApp createState() => _MyApp();
-
-
 }
 
 class _MyApp extends State<MyApp> {
   DarkThemeProvider themeChangeProvider = DarkThemeProvider();
-
 
   @override
   void initState() {
@@ -41,7 +38,7 @@ class _MyApp extends State<MyApp> {
 
   void getCurrentAppTheme() async {
     themeChangeProvider.darkTheme =
-    await themeChangeProvider.darkThemePreference.getTheme();
+        await themeChangeProvider.darkThemePreference.getTheme();
   }
 
   @override
@@ -53,7 +50,6 @@ class _MyApp extends State<MyApp> {
       child: Consumer<DarkThemeProvider>(
         builder: (context, value, child) {
           return MaterialApp(
-
             debugShowCheckedModeBanner: false,
             //theme: Styles.themeData(themeChangeProvider.darkTheme, context),
             theme: ThemeData.light(),
@@ -61,6 +57,7 @@ class _MyApp extends State<MyApp> {
             home: SplashScreen(),
           );
         },
-      ),);
+      ),
+    );
   }
 }

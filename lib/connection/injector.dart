@@ -22,17 +22,17 @@ class Injector {
     dio.options.followRedirects = false;
     dio.options.headers["Content-Type"] = "application/json";
     dio.options.headers["accept"] = "application/json";
-    String token = SharedPreferenceHelper().getUserToken();
+   /* String token = SharedPreferenceHelper().getUserToken();
     if (token != null) {
       print("token=" + token);
       int userId = SharedPreferenceHelper().getUserId();
       if (userId != null) {
         print("userId=" + userId.toString());
-      }
-      dio.options.headers["authorization"] = "Bearer " + token;
+      }*/
+     // dio.options.headers["authorization"] = "Bearer " + token;
       dio.options.headers["Content-Type"] = "application/json";
       dio.options.headers["accept"] = "application/json";
-    }
+    //}
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
       client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
       return client;

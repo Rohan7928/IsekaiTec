@@ -12,6 +12,7 @@ class SharedPreferenceHelper {
 
   static const String USER_ID = "user_id";
   static const String USER_MODEL = "user_model";
+  static const String AUTO_LOGIN = "auto_login";
   static const String USER_TOKEN = "user_token";
   static const String FCM_TOKEN  = "fcm_token";
   static const String IS_INTRO_COMPLETED = "is_intro_completed";
@@ -31,15 +32,20 @@ class SharedPreferenceHelper {
     return prefsInstance;
   }
   setDarkTheme(bool value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool(THEME_STATUS, value);
+    prefsInstance.setBool(THEME_STATUS, value);
   }
 
   Future<bool> getTheme() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(THEME_STATUS) ?? false;
+    return prefsInstance.getBool(THEME_STATUS) ?? false;
+  }
+  setAutoLogin(bool value) async{
+    prefsInstance.setBool(AUTO_LOGIN, value);
   }
 
+  Future<bool> getAutoLogin() async
+  {
+    return prefsInstance.getBool(AUTO_LOGIN) ?? false;
+  }
   factory SharedPreferenceHelper() {
     return singleton;
   }

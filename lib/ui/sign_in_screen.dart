@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:isekaitec/ui/home_screen.dart';
 import 'package:isekaitec/ui/sign_up_screen.dart';
 import 'package:isekaitec/ui/success_screen.dart';
 import 'package:isekaitec/utils/color_constants.dart';
@@ -40,238 +41,235 @@ class _SignInScreen extends State<SignInScreen> {
     super.initState();
   }
 
-  /*Future<User> signInWithGoogle(SignInViewModel model) async {
-    model.state =ViewState.Busy;
-
-    GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
-
-    GoogleSignInAuthentication googleSignInAuthentication =
-
-    await googleSignInAccount!.authentication;
-
-    AuthCredential credential = GoogleAuthProvider.getCredential(
-
-      accessToken: googleSignInAuthentication.accessToken,
-
-      idToken: googleSignInAuthentication.idToken,
-
-    );
-
-    AuthResult authResult = await _auth.signInWithCredential(credential);
-
-    _user = authResult.user;
-
-    assert(!_user.isAnonymous);
-
-    assert(await _user.getIdToken() != null);
-
-    User currentUser = await _auth.currentUser();
-
-    assert(_user.uid == currentUser.uid);
-
-
-    model.state =ViewState.Idle;
-
-    print("User Name: ${_user.displayName}");
-    print("User Email ${_user.email}");
-
-  }*/
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Are you sure?'),
+            content: const Text('Do you want to exit an App'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                //<-- SEE HERE
+                child: const Text('No'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                // <-- SEE HERE
+                child: const Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
 
   @override
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
     // TODO: implement build
-    return Scaffold(
-        body: SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 50,
-            ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: const Image(
-                fit: BoxFit.fill,
-                image: AssetImage('assets/icons/profile_img.png'),
-                width: 100.0,
-                height: 100.0,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text("Welcome to Isekai",
-                style: GoogleFonts.inter(
-                  textStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Color(ColorConstants.COLOR_BUTTON_GREEN)),
-                )),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Sign in to Continue",
-              style: GoogleFonts.inter(
-                  textStyle: const TextStyle(fontSize: 14, color: Colors.grey)),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-              child: TextField(
-                decoration: InputDecoration(
-                  label: Text("Your Email",
-                      style: GoogleFonts.inter(
-                          textStyle:
-                              const TextStyle(fontStyle: FontStyle.normal, fontSize: 12))),
-                  hintText: "e.g abc@gmail.com",
-                  prefixIcon: const Icon(Icons.email,
-                      color: Color(ColorConstants.COLOR_GREY)),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 2.0),
-                  enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(
-                    color: Color(ColorConstants.COLOR_GREY),
-                    width: 0.5,
-                  )),
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-              child: TextField(
-                decoration: InputDecoration(
-                  label: Text("Password",
-                      style: GoogleFonts.inter(
-                          textStyle:
-                              const TextStyle(fontStyle: FontStyle.normal, fontSize: 12))),
-                  hintText: "*******",
-                  prefixIcon: const Icon(Icons.lock,
-                      color: Color(ColorConstants.COLOR_GREY)),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 2.0),
-                  enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Color(ColorConstants.COLOR_GREY), width: 0.5)),
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                width: double.infinity,
-                height: 50,
-                margin: const EdgeInsets.all(30),
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(context,
-                          Utility.createCustomRoute(const SignUpScreen()));
-                    },
-                    style: ElevatedButton.styleFrom(
-                        elevation: 12.0,
-                        backgroundColor:
-                            const Color(ColorConstants.COLOR_BUTTON_GREEN),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        )),
-                    child: Text(
-                      "Sign In",
-                      style: GoogleFonts.inter(
-                          textStyle: const TextStyle(
-                              fontSize: 14, color: Colors.white)),
-                    )),
-              ),
-            ),
-            Text("OR",
-                style: GoogleFonts.inter(
-                    textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14))),
-            FutureBuilder(
-              future: Authentication.initializeFirebase(context: context),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Text('Error initializing Firebase');
-                } else if (snapshot.connectionState == ConnectionState.done) {
-                  return const GoogleSignInButton();
-                }
-                return const CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Colors.orange,
-                  ),
-                );
-              },
-            ),
-            GestureDetector(
-              onTap: () {
-                Utility.createCustomRoute(const SuccessScreen());
-              },
-              child: Container(
-                width: double.infinity,
-                height: 50,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.black12)),
-                margin: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Image(
-                      image: AssetImage('assets/icons/facebook.png'),
-                      height: 25,
-                      width: 25,
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Text(
-                      "Login with Facebook",
-                      style: GoogleFonts.inter(
-                          textStyle: const TextStyle(
-                              fontSize: 14, color: Colors.black54)),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            TextButton(
-              child: Text("Forgot Passwrod?",
-                  style: GoogleFonts.inter(
-                      textStyle: const TextStyle(
-                          color: Color(ColorConstants.COLOR_BUTTON_GREEN),
-                          fontWeight: FontWeight.bold, fontSize: 12))),
-              onPressed: () {},
-            ),
-            Row(
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: MaterialApp(
+        home: Scaffold(
+            body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Don't have a account?",
+                const SizedBox(
+                  height: 50,
+                ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: const Image(
+                    fit: BoxFit.fill,
+                    image: AssetImage('assets/icons/owl.png'),
+                    width: 110.0,
+                    height: 120.0,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text("Welcome to Isekai",
                     style: GoogleFonts.inter(
-                        textStyle:
-                            const TextStyle(fontStyle: FontStyle.normal, fontSize: 12))),
-                TextButton(
-                  child: Text(
-                    "Register",
+                      textStyle: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(ColorConstants.COLOR_BUTTON_GREEN)),
+                    )),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Sign in to Continue",
+                  style: GoogleFonts.inter(
+                      textStyle:
+                          const TextStyle(fontSize: 14, color: Colors.grey)),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      label: Text("Your Email",
+                          style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                  fontStyle: FontStyle.normal, fontSize: 12))),
+                      hintText: "e.g abc@gmail.com",
+                      prefixIcon: const Icon(Icons.email,
+                          color: Color(ColorConstants.COLOR_GREY)),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 2.0),
+                      enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                        color: Color(ColorConstants.COLOR_GREY),
+                        width: 0.5,
+                      )),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      label: Text("Password",
+                          style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                  fontStyle: FontStyle.normal, fontSize: 12))),
+                      hintText: "*******",
+                      prefixIcon: const Icon(Icons.lock,
+                          color: Color(ColorConstants.COLOR_GREY)),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 2.0),
+                      enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color(ColorConstants.COLOR_GREY),
+                              width: 0.5)),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    margin: const EdgeInsets.all(30),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(context,
+                              Utility.createCustomRoute(HomeScreen()));
+                        },
+                        style: ElevatedButton.styleFrom(
+                            elevation: 12.0,
+                            backgroundColor:
+                                const Color(ColorConstants.COLOR_BUTTON_GREEN),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            )),
+                        child: Text(
+                          "Sign In",
+                          style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                  fontSize: 14, color: Colors.white)),
+                        )),
+                  ),
+                ),
+                Text("OR",
                     style: GoogleFonts.inter(
                         textStyle: const TextStyle(
-                            color: Color(ColorConstants.COLOR_BUTTON_GREEN),
-                            fontWeight: FontWeight.bold, fontSize: 14)),
-                  ),
-                  onPressed: () {
-                    themeChange.darkTheme = true;
-                    Navigator.pushReplacement(context,
-                        Utility.createCustomRoute(const SuccessScreen()));
+                            fontWeight: FontWeight.bold, fontSize: 14))),
+                FutureBuilder(
+                  future: Authentication.initializeFirebase(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text('Error initializing Firebase');
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.done) {
+                      return const GoogleSignInButton();
+                    }
+                    return const CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Colors.orange,
+                      ),
+                    );
                   },
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Utility.createCustomRoute(const SuccessScreen());
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.black12)),
+                    margin: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Image(
+                          image: AssetImage('assets/icons/facebook.png'),
+                          height: 25,
+                          width: 25,
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          "Login with Facebook",
+                          style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                  fontSize: 14, color: Colors.black54)),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                TextButton(
+                  child: Text("Forgot Passwrod?",
+                      style: GoogleFonts.inter(
+                          textStyle: const TextStyle(
+                              color: Color(ColorConstants.COLOR_BUTTON_GREEN),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12))),
+                  onPressed: () {},
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Don't have a account?",
+                        style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                                fontStyle: FontStyle.normal, fontSize: 12))),
+                    TextButton(
+                      child: Text(
+                        "Register",
+                        style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                                color: Color(ColorConstants.COLOR_BUTTON_GREEN),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14)),
+                      ),
+                      onPressed: () {
+                        themeChange.darkTheme = true;
+                        Navigator.pushReplacement(context,
+                            Utility.createCustomRoute(const SuccessScreen()));
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        )),
       ),
-    ));
+    );
   }
 }

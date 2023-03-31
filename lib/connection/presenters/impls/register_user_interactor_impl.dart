@@ -14,16 +14,53 @@ class RegisterUserInteractorImpl implements RegisterUserInteractor {
   }
 
   @override
-  void registerUser(UserModel userModel, RegisterUserOnCompleteListener callback) async {
+  void registerUser(RegisterUserOnCompleteListener callback) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     // ignore: unrelated_type_equality_checks
     if (connectivityResult == ConnectivityResult.none) {
       return callback.onError("Please check internet connection");
     }
-    client.registerUser(userModel).then((it) {
+    client.getTop20Items().then((it) {
       DataResponse response = it;
-      if (response.status! && response.result != null) {
+      if (response.data != null) {
         callback.onSuccessRegisterUser(response);
+      } else if (response.error != null) {
+        callback.onError(response.error!);
+      } else if (response.message != null) {
+        callback.onError(response.message!);
+      }
+    }).timeout(const Duration(milliseconds: 5000), onTimeout: () {
+      callback.onError("Connection timed out");
+    }).onError((error, stackTrace) {
+      callback.onError(error.toString());
+    }).catchError((Object obj) {
+      // non-200 error goes here.
+      switch (obj.runtimeType) {
+        case DioError:
+          // Here's the sample to get the failed response error code and message
+          final res = (obj as DioError).response;
+          print("Got error : ${res?.statusCode} -> ${res?.statusMessage}");
+          callback.onError("${res?.statusMessage}");
+          break;
+        default:
+          callback.onError("Server error");
+          final res = (obj as DioError).response;
+          print("Got error : ${res?.statusCode} -> ${res?.statusMessage}");
+      }
+    });
+  }
+
+  @override
+  void getProductCategoryApi(RegisterUserOnCompleteListener callback) async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    // ignore: unrelated_type_equality_checks
+    if (connectivityResult == ConnectivityResult.none) {
+      return callback.onError("Please check internet connection");
+    }
+    client.getProductCategoryApi().then((it) {
+      DataResponse response = it;
+      if (response.data != null) {
+        callback.onSuccessProductCategory(response);
       } else if (response.error != null) {
         callback.onError(response.error!);
       } else if (response.message != null) {

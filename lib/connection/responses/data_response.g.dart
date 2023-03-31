@@ -23,6 +23,7 @@ DataResponse<P> _$DataResponseFromJson<P>(
       status: json['status'] as bool?,
       error: json['error'] as String?,
       message: json['message'] as String?,
+      data: (json['data'] as List<dynamic>?)?.map(fromJsonP).toList(),
     );
 
 Map<String, dynamic> _$DataResponseToJson<P>(
@@ -38,6 +39,7 @@ Map<String, dynamic> _$DataResponseToJson<P>(
   }
 
   writeNotNull('items', instance.items?.map(toJsonP).toList());
+  writeNotNull('data', instance.data?.map(toJsonP).toList());
   writeNotNull('totalRecords', instance.totalRecords);
   writeNotNull('pageNo', instance.pageNo);
   writeNotNull('pageSize', instance.pageSize);

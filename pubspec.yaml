@@ -59,10 +59,10 @@ dependencies:
   contacts_service: ^0.6.3
   firebase_auth: ^4.2.3
   firebase_core_platform_interface: 4.5.2
-  carousel_slider: ^2.3.1
+  carousel_slider: ^4.2.1
   google_sign_in: ^5.0.0
   provider: ^5.0.0
-
+  carousel_indicator: ^1.0.6
 dev_dependencies:
   flutter_test:
     sdk: flutter

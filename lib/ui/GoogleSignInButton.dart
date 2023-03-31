@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:isekaitec/utils/utility.dart';
 
 import '../utils/authentication.dart';
+import 'home_screen.dart';
 
 class GoogleSignInButton extends StatefulWidget {
   const GoogleSignInButton({super.key});
@@ -48,7 +49,8 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                 });
                 print(userName);
                 if (user != null) {
-                  Utility.customSnackBar(content: userName);
+                  Navigator.pushReplacement(
+                      context, Utility.createCustomRoute(HomeScreen()));
                 }
               },
               child: Padding(
